@@ -424,12 +424,13 @@
 
       <!-- Custom Model Input Drawer -->
       <div class="model-drawer" id="model-drawer">
-        <label for="custom-url-input">Teachable Machine Link</label>
+        <label for="custom-url-input">Change Teachable Machine Link</label>
         <div class="url-input-group">
           <input 
             type="text" 
             id="custom-url-input" 
-            placeholder="https://teachablemachine.withgoogle.com/models/YOUR_ID/" 
+            placeholder="https://teachablemachine.withgoogle.com/models/YOUR_MODEL_ID/" 
+            value="https://teachablemachine.withgoogle.com/models/C6czTo6wn/"
           />
           <button onclick="applyCustomModel()">Load Custom Model</button>
         </div>
@@ -500,7 +501,7 @@
     <div class="modal-content">
       <h2>How to Play</h2>
       <ol>
-        <li>Click <strong>Start Camera</strong> to activate your webcam and load the AI model.</li>
+        <li>Click <strong>Start Camera</strong> to activate your webcam and load the default AI model.</li>
         <li>Hold up a gesture in front of your camera:
           <ul>
             <li><strong>Fist:</strong> Rock</li>
@@ -510,14 +511,14 @@
         </li>
         <li>Watch the live <strong>Detected</strong> label update in real-time.</li>
         <li>Click <strong>Play Hand</strong> to submit your gesture against the computer!</li>
-        <li>Want to use your own custom model? Click <strong>Use Custom Model</strong>, paste your Teachable Machine shareable URL, and click load!</li>
+        <li>Want to test your own custom model? Click <strong>Use Custom Model</strong>, paste your Teachable Machine shareable URL, and click load!</li>
       </ol>
       <button onclick="toggleTutorial()">Got It</button>
     </div>
   </div>
 
   <script>
-    // DEFAULT MODEL URL
+    // DEFAULT MODEL URL SET TO YOURS
     let activeModelUrl = "https://teachablemachine.withgoogle.com/models/C6czTo6wn/";
 
     // System Variables
@@ -551,11 +552,9 @@
         return;
       }
       activeModelUrl = inputVal.endsWith("/") ? inputVal : inputVal + "/";
-      document.getElementById("status-label").innerText = "Custom model set! Click Start Camera.";
+      document.getElementById("status-label").innerText = "Custom model updated!";
       toggleCustomModelDrawer();
-      if (isModelLoaded) {
-        initModel(); // Reload if camera is already active
-      }
+      initModel(); // Reload webcam with new model
     }
 
     // 1. Initialize Teachable Machine Model & Webcam
@@ -593,6 +592,7 @@
         document.getElementById("result-text").innerText = "Show your hand and click Play Hand";
         
         startBtn.innerText = "Active";
+        startBtn.disabled = false;
         statusLabel.innerText = "AI Ready & Camera Online";
 
         // Start prediction loop
